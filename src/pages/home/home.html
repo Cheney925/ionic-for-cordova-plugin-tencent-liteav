@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      直播
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content >
+	<ion-list>
+		<ion-item>
+			<ion-label floating>视频流地址</ion-label>
+			<ion-input type="text" [(ngModel)]="url"></ion-input>
+		</ion-item>
+	</ion-list>
+
+	<div padding style="margin-top: -20px">
+	  <button ion-button block (tap)="goToPlayerPage()">开始播放</button>
+	</div>
+</ion-content>

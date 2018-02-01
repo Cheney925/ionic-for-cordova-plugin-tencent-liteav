@@ -1,0 +1,44 @@
+page-player {
+	.player {
+		position: relative;
+		width: 100%;
+		text-align: center;
+
+		.button {
+			height: 2.4em;
+			width: 2.4em;
+			opacity: 0.8;
+			font-size: 1em;
+			border-radius: 50%;
+			background-color: rgba(0,0,0,.5);
+		}
+
+		.close {
+			position: absolute;
+			left: 5px;
+			top: 5px;
+		}
+
+		.play {
+			position: absolute;
+			left: 5px;
+			bottom: 5px;
+		}
+
+		.expand {
+			position: absolute;
+			right: 5px;
+			bottom: 5px;
+		}
+	}
+
+	.chat {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #fefefe;
+		border-top: 1px solid #f2f2f2;
+		padding: 10px;
+	}
+}

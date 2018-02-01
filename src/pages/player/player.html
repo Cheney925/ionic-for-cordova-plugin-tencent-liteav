@@ -1,0 +1,20 @@
+<div *ngIf="playerHeight">
+	<div class="player" [ngStyle]="{'height.px':playerHeight}">
+		<button class="close" ion-button icon-only clear color="light" (tap)="close()">
+			<ion-icon name="md-close"></ion-icon>
+		</button>
+		<button class="play" ion-button icon-only clear color="light" (tap)="resume()" *ngIf="!playing">
+			<ion-icon name="ios-play"></ion-icon>
+		</button>
+		<button class="play" ion-button icon-only clear color="light" (tap)="pause()" *ngIf="playing">
+			<ion-icon name="ios-pause"></ion-icon>
+		</button>
+		<button class="expand" ion-button icon-only clear color="light" (tap)="changePlayMode()">
+			<ion-icon name="ios-expand"></ion-icon>
+		</button>
+	</div>
+
+	<div class="chat" *ngIf="playMode==1" [ngStyle]="{'top.px':playerHeight}">
+		可以放置弹幕或者其他功能
+	</div>
+</div>
