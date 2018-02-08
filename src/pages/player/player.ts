@@ -1,13 +1,12 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 declare var window: any;
 
 @IonicPage({
-	name: 'player',
-	segment: 'player'
+  name: 'player',
+  segment: 'player'
 })
 @Component({
   selector: 'page-player',
@@ -15,21 +14,20 @@ declare var window: any;
 })
 export class PlayerPage {
 
-	url: string;
+  url: string;
 
-	playing: boolean = false;
+  playing: boolean = false;
 
-	playMode: number = 1; // 默认竖屏模式
+  playMode: number = 1; // 默认竖屏模式
 
   playerHeight: number = 0; // 播放器高度
 
   windowWidth: number = window.innerWidth;
 
   constructor(
-  	public navCtrl: NavController,
-  	public navParams: NavParams,
-  	private statusBar: StatusBar,
-  	private viewCtrl: ViewController,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private viewCtrl: ViewController,
     private screenOrientation: ScreenOrientation,
     private ref: ChangeDetectorRef
   ) {
@@ -41,10 +39,8 @@ export class PlayerPage {
   init() {
     console.log('[CLiteAV] 初始化...');
 
-    this.statusBar.hide();
-
-  	this.url = this.navParams.get('url');
-  	document.body.classList.add('video-play');
+    this.url = this.navParams.get('url');
+    document.body.classList.add('video-play');
 
     this.initScreenHandler();
 
@@ -86,79 +82,77 @@ export class PlayerPage {
   // 开始播放
   start() {
     console.log('[CLiteAV] 准备播放...');
-  	try {
-	  	window.CLiteAV.startPlay({
-	      url: this.url,
-	      playType: window.CLiteAV.PLAY_TYPE.LIVE_RTMP
-	    }, (msgSuccess) => {
-	      console.log(msgSuccess);
+    try {
+      window.CLiteAV.startPlay({
+        url: this.url,
+        playType: window.CLiteAV.PLAY_TYPE.LIVE_RTMP
+      }, (msgSuccess) => {
+        console.log(msgSuccess);
         console.log('[CLiteAV WEB] 播放成功');
-		  }, (msgError) => {
-	      console.log(msgError);
+      }, (msgError) => {
+        console.log(msgError);
         console.log('[CLiteAV WEB] 播放失败');
-		  });
+      });
 
-	  	this.playing = true;
+      this.playing = true;
 
       this.screenOrientation.unlock();
-  	} catch(e) {
-  		console.log(e);
-  	}
+    } catch(e) {
+      console.log(e);
+    }
   }
 
   // 停止播放
   pause() {
-  	try {
-	  	window.CLiteAV.pause();
-		  this.playing = false;
-	  } catch(e) {
-  		console.log(e);
-  	}
+    try {
+      window.CLiteAV.pause();
+      this.playing = false;
+    } catch(e) {
+      console.log(e);
+    }
   }
 
   // 恢复播放
   resume() {
-  	try {
-	  	window.CLiteAV.resume();
-		  this.playing = true;
-	  } catch(e) {
-  		console.log(e);
-  	}
+    try {
+      window.CLiteAV.resume();
+      this.playing = true;
+    } catch(e) {
+      console.log(e);
+    }
   }
 
   // 退出播放
   close() {
-  	try {
-		  this.playing = false;
-	  	this.viewCtrl.dismiss();
+    try {
+      this.playing = false;
+      this.viewCtrl.dismiss();
+      document.body.classList.remove('video-play');
 
-	  	this.statusBar.show();
-	  	document.body.classList.remove('video-play');
-
-	  	window.CLiteAV.stopPlay();
-	  } catch(e) {
-  		console.log(e);
-  	}
+      window.CLiteAV.stopPlay();
+    } catch(e) {
+      console.log(e);
+    }
   }
 
   // 横竖屏切换
   changePlayMode() {
-  	try {
-  		if (this.playMode == 1) {
-  			this.playMode = 0;
+    try {
+      if (this.playMode == 1) {
+        this.playMode = 0;
         this.playerHeight = this.windowWidth;
-	  		window.CLiteAV.setPlayMode(0);
+        window.CLiteAV.setPlayMode(0);
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
-  		} else {
-  			this.playMode = 1;
+      } else {
+        this.playMode = 1;
         this.playerHeight = this.windowWidth * 9/16;
-	  		window.CLiteAV.setPlayMode(1);
+        window.CLiteAV.setPlayMode(1);
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
-  		}
+      }
       this.ref.detectChanges();
-	  } catch(e) {
-  		console.log(e);
-  	}
+    } catch(e) {
+      console.log(e);
+    }
   }
 
 }
