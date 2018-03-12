@@ -1,6 +1,7 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { StatusBar } from '@ionic-native/status-bar';
 
 declare var window: any;
 
@@ -18,6 +19,8 @@ export class PlayerPage {
 
   playing: boolean = false;
 
+  micLinked: boolean = false;
+
   playMode: number = 1; // 默认竖屏模式
 
   playerHeight: number = 0; // 播放器高度
@@ -29,7 +32,8 @@ export class PlayerPage {
     public navParams: NavParams,
     private viewCtrl: ViewController,
     private screenOrientation: ScreenOrientation,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private statusBar: StatusBar
   ) {
     this.init();
     this.start();
@@ -143,16 +147,34 @@ export class PlayerPage {
         this.playerHeight = this.windowWidth;
         window.CLiteAV.setPlayMode(0);
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+
+        this.statusBar.hide();
       } else {
         this.playMode = 1;
         this.playerHeight = this.windowWidth * 9/16;
         window.CLiteAV.setPlayMode(1);
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+
+        this.statusBar.show();
       }
       this.ref.detectChanges();
     } catch(e) {
       console.log(e);
     }
+  }
+
+  // 连麦
+  startMic() {
+    this.micLinked = true;
+    window.CLiteAV.startLinkMic({
+      url: 'http://192.168.1.23:1935/live/cheney'
+    });
+  }
+
+  // 连麦
+  stopMic() {
+    this.micLinked = false;
+    window.CLiteAV.stopLinkMic();
   }
 
 }

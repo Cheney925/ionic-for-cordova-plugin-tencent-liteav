@@ -9,6 +9,12 @@
 		<button class="play" ion-button icon-only clear color="light" (tap)="pause()" *ngIf="playing">
 			<ion-icon name="ios-pause"></ion-icon>
 		</button>
+		<button class="mic" ion-button icon-only clear color="light" (tap)="startMic()" *ngIf="!micLinked">
+			<ion-icon name="ios-mic-off"></ion-icon>
+		</button>
+		<button class="mic" ion-button icon-only clear color="light" (tap)="stopMic()" *ngIf="micLinked">
+			<ion-icon name="ios-mic"></ion-icon>
+		</button>
 		<button class="expand" ion-button icon-only clear color="light" (tap)="changePlayMode()">
 			<ion-icon name="ios-expand"></ion-icon>
 		</button>
