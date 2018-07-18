@@ -16,12 +16,13 @@ declare var window: any;
 export class PlayerPage {
 
   url: string;
+  playType: number;
 
   playing: boolean = false;
 
   micLinked: boolean = false;
 
-  playMode: number = 1; // 默认竖屏模式
+  playMode: number = 0; // 默认竖屏模式
 
   playerHeight: number = 0; // 播放器高度
 
@@ -44,42 +45,21 @@ export class PlayerPage {
     console.log('[CLiteAV] 初始化...');
 
     this.url = this.navParams.get('url');
+    this.playType = this.navParams.get('playType');
+
     document.body.classList.add('video-play');
 
-    this.initScreenHandler();
-
-    // this.initPlayHandler();
+    this.initPlayHandler();
 
     // 按默认16:9的视频尺寸设置播放器高度，宽度为100%
-    this.playerHeight = this.windowWidth * 9/16;
+    this.playerHeight = this.windowWidth;
   }
 
   // 监听播放事件
   initPlayHandler() {
-    document.addEventListener('CLiteAV.onNetStatus', function(netStatus) {
-      console.log('监听到“CLiteAV.onNetStatus”事件');
+    document.addEventListener('CLiteAV.onNetStatusChange', (netStatus) => {
+      console.log('[CLiteAV WEB] 网络状态：');
       console.log(netStatus);
-    });
-  }
-
-  // 监听设置屏幕变化
-  initScreenHandler() {
-    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
-    this.screenOrientation.onChange().subscribe(() => {
-      console.log('[CLiteAV] 屏幕横竖屏发生变化');
-      console.log(this.screenOrientation.type);
-      let type = this.screenOrientation.type;
-      if (type.indexOf('portrait') != -1) {
-        this.playMode = 1;
-        this.playerHeight = this.windowWidth * 9/16;
-        window.CLiteAV.setPlayMode(1);
-        this.screenOrientation.unlock();
-      } else {
-        this.playMode = 0;
-        this.playerHeight = this.windowWidth;
-        window.CLiteAV.setPlayMode(0);
-      }
-      this.ref.detectChanges();
     });
   }
 
@@ -87,20 +67,24 @@ export class PlayerPage {
   start() {
     console.log('[CLiteAV] 准备播放...');
     try {
-      window.CLiteAV.startPlay({
-        url: this.url,
-        playType: window.CLiteAV.PLAY_TYPE.LIVE_RTMP
-      }, (msgSuccess) => {
-        console.log(msgSuccess);
-        console.log('[CLiteAV WEB] 播放成功');
-      }, (msgError) => {
-        console.log(msgError);
-        console.log('[CLiteAV WEB] 播放失败');
+      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE).then(() => {
+        window.CLiteAV.startPlay({
+          url: this.url,
+          playType: this.playType,
+          playMode: 0
+        }, (msgSuccess) => {
+          console.log(msgSuccess);
+          console.log('[CLiteAV WEB] 播放成功');
+        }, (msgError) => {
+          console.log(msgError);
+          console.log('[CLiteAV WEB] 播放失败');
+        });
+        this.statusBar.hide();
       });
 
       this.playing = true;
 
-      this.screenOrientation.unlock();
+      // this.screenOrientation.unlock();
     } catch(e) {
       console.log(e);
     }
@@ -129,11 +113,17 @@ export class PlayerPage {
   // 退出播放
   close() {
     try {
+      this.statusBar.show();
+      this.statusBar.overlaysWebView(true);
+      this.statusBar.styleDefault();
+
       this.playing = false;
       this.viewCtrl.dismiss();
       document.body.classList.remove('video-play');
 
       window.CLiteAV.stopPlay();
+
+      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
     } catch(e) {
       console.log(e);
     }
@@ -145,17 +135,20 @@ export class PlayerPage {
       if (this.playMode == 1) {
         this.playMode = 0;
         this.playerHeight = this.windowWidth;
-        window.CLiteAV.setPlayMode(0);
-        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
-
-        this.statusBar.hide();
+        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE).then(() => {
+          window.CLiteAV.setPlayMode(0);
+          this.statusBar.hide();
+        });
       } else {
         this.playMode = 1;
         this.playerHeight = this.windowWidth * 9/16;
-        window.CLiteAV.setPlayMode(1);
-        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
-
-        this.statusBar.show();
+        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT).then(() => {
+          window.CLiteAV.setPlayMode(1);
+          this.statusBar.show();
+          this.statusBar.overlaysWebView(false);
+          this.statusBar.styleLightContent();
+          this.statusBar.backgroundColorByName('black');
+        });
       }
       this.ref.detectChanges();
     } catch(e) {

@@ -1,8 +1,8 @@
 {
-  "name": "demo",
-  "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "name": "LiteAV",
+  "version": "1.0.0",
+  "author": "Cheney Hu",
+  "homepage": "https://github.com/Cheney925/ionic-for-cordova-plugin-tencent-liteav",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",
@@ -25,13 +25,12 @@
     "@ionic-native/splash-screen": "4.4.0",
     "@ionic-native/status-bar": "4.4.0",
     "@ionic/storage": "2.1.3",
-    "cordova-ios": "^4.5.4",
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-device": "^1.1.4",
     "cordova-plugin-screen-orientation": "^3.0.1",
     "cordova-plugin-splashscreen": "^4.0.3",
     "cordova-plugin-statusbar": "^2.4.1",
-    "cordova-plugin-tencent-LiteAV": "https://github.com/Cheney925/cordova-plugin-tencent-LiteAV.git",
+    "cordova-plugin-tencent-liteav": "^0.1.0",
     "cordova-plugin-whitelist": "^1.3.1",
     "ionic-angular": "3.9.2",
     "ionic-plugin-keyboard": "^2.2.1",
@@ -51,12 +50,10 @@
       "cordova-plugin-whitelist": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-tencent-LiteAV": {},
       "cordova-plugin-statusbar": {},
-      "cordova-plugin-screen-orientation": {}
+      "cordova-plugin-screen-orientation": {},
+      "cordova-plugin-tencent-liteav": {}
     },
-    "platforms": [
-      "ios"
-    ]
+    "platforms": []
   }
 }
