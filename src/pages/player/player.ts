@@ -58,8 +58,11 @@ export class PlayerPage {
   // 监听播放事件
   initPlayHandler() {
     document.addEventListener('CLiteAV.onNetStatusChange', (netStatus) => {
-      console.log('[CLiteAV WEB] 网络状态：');
-      console.log(netStatus);
+      console.log(`[CLiteAV WEB] 网络状态：${netStatus}`);
+    });
+
+    document.addEventListener('CLiteAV.onPlayEvent', (data: any) => {
+      console.log(`[CLiteAV WEB] 播放事件：${data.eventID} - ${data.params}`);
     });
   }
 
