@@ -82,7 +82,5 @@
     <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
     <plugin name="cordova-plugin-statusbar" spec="^2.4.1" />
     <plugin name="cordova-plugin-screen-orientation" spec="^3.0.1" />
-    <plugin name="cordova-plugin-tencent-liteav" spec="^0.1.0" />
-    <engine name="ios" spec="~4.5.4" />
-    <engine name="android" spec="~6.1.0" />
+    <plugin name="cordova-plugin-tencent-liteav" spec="^0.2.2" />
 </widget>
