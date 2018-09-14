@@ -22,11 +22,15 @@ export class PlayerPage {
 
   micLinked: boolean = false;
 
-  playMode: number = 0; // 默认竖屏模式
-
-  playerHeight: number = 0; // 播放器高度
+  playMode: number = 0; // 横屏模式
+  // playMode: number = 1; // 竖屏模式
 
   windowWidth: number = window.innerWidth;
+
+  // 横屏模式下播放器高度
+  playerHeight: number = this.windowWidth;
+  // 竖屏模式下播放器高度
+  // playerHeight: number = this.windowWidth * 9/16;
 
   constructor(
     public navCtrl: NavController,
@@ -50,9 +54,6 @@ export class PlayerPage {
     document.body.classList.add('video-play');
 
     this.initPlayHandler();
-
-    // 按默认16:9的视频尺寸设置播放器高度，宽度为100%
-    this.playerHeight = this.windowWidth;
   }
 
   // 监听播放事件
@@ -74,15 +75,23 @@ export class PlayerPage {
         window.CLiteAV.startPlay({
           url: this.url,
           playType: this.playType,
-          playMode: 0
+          playMode: 0 // 横屏模式
         }, (msgSuccess) => {
           console.log(msgSuccess);
           console.log('[CLiteAV WEB] 播放成功');
+          
+          // 横屏时
+          this.statusBar.hide();
+
+          // 竖屏时，按默认16:9的视频尺寸设置播放器高度，宽度为100%
+          // this.statusBar.show();
+          // this.statusBar.overlaysWebView(false);
+          // this.statusBar.styleLightContent();
+          // this.statusBar.backgroundColorByName('black');
         }, (msgError) => {
           console.log(msgError);
           console.log('[CLiteAV WEB] 播放失败');
         });
-        this.statusBar.hide();
       });
 
       this.playing = true;
