@@ -9,11 +9,14 @@
 2. 安装node模块
 `npm i`
 
-3. 添加原生工程 
+3. 打包Ionic
+`ionic build --prod`
+
+4. 添加原生工程 
 `ionic cordova platform add ios`
 `ionic cordova platform add android`
 
-4. 运行
+5. 运行
 `cordova run ios`
 `cordova run android`
 
