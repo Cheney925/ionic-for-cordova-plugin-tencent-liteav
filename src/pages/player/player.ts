@@ -172,7 +172,7 @@ export class PlayerPage {
   startMic() {
     this.micLinked = true;
     window.CLiteAV.startLinkMic({
-      url: 'http://192.168.1.23:1935/live/cheney'
+      url: 'rtmp://192.168.1.23:1935/live/cheney'
     });
   }
 
